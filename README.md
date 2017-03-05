@@ -21,7 +21,7 @@ The goals / steps of this project are the following:
 [image5]: ./output_images/lanes_bird_view.jpg "Lanes bird view"
 [image6]: ./output_images/tracked_Lanes.jpg "Tracked Lanes"
 [image7]: ./output_images/lane_fitting.jpg "Lane fitting"
-[image8]: ./output_images/color_fit_lines.jpg "Fit Visual"
+[image8]: ./output_images/color_fit_lanes.jpg "Fit Visual"
 [image9]: ./output_images/Finaloutput.jpg "Output"
 [video10]: ./project_output_final.mp4 "Video"
 
@@ -92,7 +92,7 @@ I then rendered the path using the dtected lane lines like the image shown below
 ![alt text][image6]
 
 and the Final Image Looks like this.
-![alt text][image8]
+![alt text][image9]
 ---
 
 ###Pipeline (video)
