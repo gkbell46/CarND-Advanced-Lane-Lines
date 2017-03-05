@@ -18,11 +18,11 @@ The goals / steps of this project are the following:
 [image2]: ./output_images/undistorted_image.jpg "Undistorted Image"
 [image3]: ./output_images/Original_lanes.jpg "Original Lanes Image"
 [image4]: ./output_images/Undistored_lanes.jpg "Undistorted Lanes Image"
-[image5]: ./output_images/lane_bird_view.jpg "Lanes bird view"
+[image5]: ./output_images/lanes_bird_view.jpg "Lanes bird view"
 [image6]: ./output_images/tracked_Lanes.jpg "Tracked Lanes"
 [image7]: ./output_images/lane_fitting.jpg "Lane fitting"
 [image8]: ./output_images/color_fit_lines.jpg "Fit Visual"
-[image9]: ./output_images/Final_output.jpg "Output"
+[image9]: ./output_images/Finaloutput.jpg "Output"
 [video10]: ./project_output_final.mp4 "Video"
 
 
