@@ -29,11 +29,7 @@ The goals / steps of this project are the following:
 ---
 ###README
 
-####1.  
-
 ###Camera Calibration
-
-####1. 
 
 The code for this step is in `calibrate()` of LaneTracker.py
 
@@ -46,8 +42,6 @@ I then used the output `objpoints` and `imgpoints` to compute the camera calibra
 
 ###Pipeline (single images)
 
-####1. 
-
 Now I applied distortion correction function to the images from the video clips and results are as shown below:
 ###Original image
 ![alt text][image3]
@@ -55,13 +49,9 @@ Now I applied distortion correction function to the images from the video clips 
 ###Undistorted image
 ![alt text][image4]
 
-####2. 
-
 I used a combination of color and gradient thresholds to generate a binary image (thresholding steps can be found in `Process_data_mag_abs_color()` in `LaneTracker.py`).  Here's an example of my output for this step. 
 
 ![alt text][image6]
-
-####3. Describe how (and identify where in your code) you performed a perspective transform and provide an example of a transformed image.
 
 The code for my perspective transform includes a function called `warper()`, which appears in lines 1 through 8 in the file `example.py` (output_images/examples/example.py) (or, for example, in the 3rd code cell of the IPython notebook).  The `warper()` function takes as inputs an image (`img`), as well as source (`src`) and destination (`dst`) points.  I chose the hardcode the source and destination points in the following manner:
 
@@ -91,17 +81,11 @@ I verified that my perspective transform was working as expected by drawing the 
 
 ![alt text][image5]
 
-####4. 
-
 Then I fit my lane lines with a 2nd order polynomial kinda like this:
 
 ![alt text][image7]
 
-####5. 
-
 The radius of curvature is calculated using the `get_curvature()`. and the offset is calculate in process_image() in `LaneTracker.py`
-
-####6. Provide an example image of your result plotted back down onto the road such that the lane area is identified clearly.
 
 I then rendered the path using the dtected lane lines like the image shown below using the `render_lane_detected()`:
 
@@ -112,8 +96,6 @@ and the Final Image Looks like this.
 ---
 
 ###Pipeline (video)
-
-####1. 
 
 Here's a [link to my video result](./project_output_final.mp4)
 
