@@ -53,7 +53,7 @@ I used a combination of color and gradient thresholds to generate a binary image
 
 ![alt text][image6]
 
-The code for my perspective transform includes a function called `warper()`, which appears in lines 1 through 8 in the file `example.py` (output_images/examples/example.py) (or, for example, in the 3rd code cell of the IPython notebook).  The `warper()` function takes as inputs an image (`img`), as well as source (`src`) and destination (`dst`) points.  I chose the hardcode the source and destination points in the following manner:
+The code for my perspective transform includes a function called `perspective_transform()`, which appears in lines 136 through 147 in the file `LaneTracker.py`.  The `perspective_transform()` function takes as inputs an image (`img`), as well as size_top, size_bottom of the trapeziod required for lane marking.  source (`src`) and destination (`dst`) points are calculated using the formaule mentioned below.
 
 ```
 src = np.float32(
