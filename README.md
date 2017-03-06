@@ -180,9 +180,7 @@ Here's a [link to my video result](./project_output_final.mp4)
 ---
 ###Discussion
 
-####1. Briefly discuss any problems / issues you faced in your implementation of this project.  Where will your pipeline likely fail?  What could you do to make it more robust?
-
-Tuning of threshold values and to get right mixing of different thresholding fucntions to get lane lines alone highlighted. I used interactive widgets of in Ipython to tune the threshold values.  
+Tuning of threshold values and to get right mixing of different thresholding fucntions to get lane lines alone highlighted. I used interactive widgets of in Ipython to tune the threshold values(Ipython Notebook will be added soon).  
 
 My pipeline will fail if the lane lines become less visible due to high sunshine on road or dark shadows. Also need to work on video stabilization before processing. Because the Bumpiness of the road will also make the prediction of lane lines difficult. 
 
