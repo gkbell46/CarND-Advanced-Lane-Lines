@@ -63,8 +63,8 @@ def calibrate(nx=6,ny=9,calib_img_path='./camera_cal/calibration*.jpg'):
     return mtx,dst
 
 
-def undistort(image,mtx,dst, debug=False):
-    un_img = cv2.undistort(image,mtx,dst,None,mtx)
+def undistort(image,mtx,dist, debug=False):
+    un_img = cv2.undistort(image,mtx,dist,None,mtx)
     if debug==True:
         # Visualize undistortion
         f, (ax1, ax2) = plt.subplots(1, 2, figsize=(20,10))
@@ -146,6 +146,17 @@ def perspective_transform(image, debug=False, size_top=70, size_bottom=370, offs
            
     return warped, M, Minv
 
+def get_perspective_rectangles(image):
+    size_top=70
+    size_bottom=370
+    height, width = image.shape[0:2]
+    output_size = height/2
+
+    src = np.float32([[(width/2) - size_top, height*0.65], [(width/2) + size_top, height*0.65], [(width/2) + size_bottom, height-50], [(width/2) - size_bottom, height-50]])
+    dst = np.float32([[(width/2) - output_size, (height/2) - output_size], [(width/2) + output_size, (height/2) - output_size], [(width/2) + output_size, (height/2) + output_size], [(width/2) - output_size, (height/2) + output_size]])
+
+    return src, dst
+
 def Process_data_mag_abs_color(image_1,sobel_kernel=21,idx=0,
                  mag_thresh_0=20, mag_thresh_1=255, 
                  x_thresh_0 = 212, x_thresh_1 = 255,
@@ -163,11 +174,12 @@ def Process_data_mag_abs_color(image_1,sobel_kernel=21,idx=0,
     #preprocess_img[(gradx==1)&(grady==1)] = 1
     #preprocess_img = cv2.bitwise_not(preprocess_img)
     preprocess_img = cv2.GaussianBlur(preprocess_img,(5,5),0)
-    
+    """
     (thresh,im_bw) = cv2.threshold(preprocess_img,128,255,cv2.THRESH_BINARY| cv2.THRESH_OTSU)
     (thresh,gradx) = cv2.threshold(gradx,128,255,cv2.THRESH_BINARY| cv2.THRESH_OTSU)
     (thresh,grady) = cv2.threshold(grady,128,255,cv2.THRESH_BINARY| cv2.THRESH_OTSU)
     (thresh,gradxy) = cv2.threshold(gradxy,128,255,cv2.THRESH_BINARY| cv2.THRESH_OTSU)
+    """
     if debug==True:
         print("dir_binary",dir_binary.shape)
         print("gradxy_size",gradxy.shape)
@@ -350,7 +362,7 @@ def polynomial_fit_2(binary_warped,left_fit,right_fit):
 
 def render_lane_detected(image,binary_img,ploty,left_fitx,right_fitx, Minv):
        
-      
+    """  
     #src, dst = get_perspective_rectangles(image)
     #Minv = cv2.getPerspectiveTransform(dst, src)
     
@@ -375,6 +387,37 @@ def render_lane_detected(image,binary_img,ploty,left_fitx,right_fitx, Minv):
     #plt.imshow(result)
     
     #lanes = visualization(result,nonzeroy)
+    """
+    
+    src, dst = get_perspective_rectangles(image)
+    Minv = cv2.getPerspectiveTransform(dst, src)
+    
+    warp_zero = np.zeros_like(image[:,:,0]).astype(np.uint8)
+    color_warp = np.dstack((warp_zero, warp_zero, warp_zero))
+
+    # Recast the x and y points into usable format for cv2.fillPoly()
+    pts_left = np.array([np.transpose(np.vstack([left_fitx, ploty]))])
+    pts_right = np.array([np.flipud(np.transpose(np.vstack([right_fitx, ploty])))])
+    pts = np.hstack((pts_left, pts_right))
+
+    # Draw the lane onto the warped blank image
+    cv2.fillPoly(color_warp, np.int_([pts]), (0,255, 0))
+
+    # Warp the blank back to original image space using inverse perspective matrix (Minv)
+    newwarp = cv2.warpPerspective(color_warp, Minv, (image.shape[1], image.shape[0])) 
+    # Combine the result with the original image
+    #print(newwarp.shape)
+    result = cv2.addWeighted(image, 1.0, newwarp, 0.3, 0)
+    #print(result.shape)
+    #res_img = cv2.resize(binary_img,(64,64),interpolation=cv2.INTER_AREA)
+    #print(res_img.shape)
+    #res_img = cv2.addWeighted(result,2.0,binary_img,0.5,0)
+    #res_img = cv2.
+    #result = cv2.addWeighted(result,1.0,res_img,1.0,0)
+    #result = cv2.putText(result, "Bird,s view", (900, 80), cv2.FONT_HERSHEY_SIMPLEX, 1, [0, 0, 0], 2)
+    
+    #lanes = visualization(result,nonzeroy)
+    
     return result
 
 def get_curvature(ploty, left_fitx, right_fitx):
@@ -411,7 +454,7 @@ def process_image(input_image,mtx, dst,prev_left_fit=0,prev_right_fit=0, video=F
     image_binary = Process_data_mag_abs_color(image_transformed)
     
     # step 4: fit polynomials
-    if video is False:
+    if (prev_left_fit is not None) and  (prev_right_fit is not None):
         out_img2, left_fitx, right_fitx, left_fit, right_fit, ploty,nonzeroy,nonzerox,left_lane_inds,right_lane_inds = polynomial_fit_2(image_binary, prev_left_fit, prev_right_fit)
         
         #print("test2")
