@@ -18,22 +18,18 @@ The goals / steps of this project are the following:
 [image2]: ./output_images/undistorted_image.jpg "Undistorted Image"
 [image3]: ./output_images/Original_lanes.jpg "Original Lanes Image"
 [image4]: ./output_images/Undistored_lanes.jpg "Undistorted Lanes Image"
-[image5]: ./output_images/lane_bird_view.jpg "Lanes bird view"
+[image5]: ./output_images/lanes_bird_view.jpg "Lanes bird view"
 [image6]: ./output_images/tracked_Lanes.jpg "Tracked Lanes"
 [image7]: ./output_images/lane_fitting.jpg "Lane fitting"
-[image8]: ./output_images/color_fit_lines.jpg "Fit Visual"
-[image9]: ./output_images/Final_output.jpg "Output"
+[image8]: ./output_images/color_fit_lanes.jpg "Fit Visual"
+[image9]: ./output_images/Finaloutput.jpg "Output"
 [video10]: ./project_output_final.mp4 "Video"
 
 
 ---
 ###README
 
-####1.  
-
 ###Camera Calibration
-
-####1. 
 
 The code for this step is in `calibrate()` of LaneTracker.py
 
@@ -46,8 +42,6 @@ I then used the output `objpoints` and `imgpoints` to compute the camera calibra
 
 ###Pipeline (single images)
 
-####1. 
-
 Now I applied distortion correction function to the images from the video clips and results are as shown below:
 ###Original image
 ![alt text][image3]
@@ -55,15 +49,11 @@ Now I applied distortion correction function to the images from the video clips 
 ###Undistorted image
 ![alt text][image4]
 
-####2. 
-
 I used a combination of color and gradient thresholds to generate a binary image (thresholding steps can be found in `Process_data_mag_abs_color()` in `LaneTracker.py`).  Here's an example of my output for this step. 
 
 ![alt text][image6]
 
-####3. Describe how (and identify where in your code) you performed a perspective transform and provide an example of a transformed image.
-
-The code for my perspective transform includes a function called `warper()`, which appears in lines 1 through 8 in the file `example.py` (output_images/examples/example.py) (or, for example, in the 3rd code cell of the IPython notebook).  The `warper()` function takes as inputs an image (`img`), as well as source (`src`) and destination (`dst`) points.  I chose the hardcode the source and destination points in the following manner:
+The code for my perspective transform includes a function called `perspective_transform()`, which appears in lines 136 through 147 in the file `LaneTracker.py`.  The `perspective_transform()` function takes as inputs an image (`img`), as well as size_top, size_bottom of the trapeziod required for lane marking.  source (`src`) and destination (`dst`) points are calculated using the formaule mentioned below.
 
 ```
 src = np.float32(
@@ -91,32 +81,29 @@ I verified that my perspective transform was working as expected by drawing the 
 
 ![alt text][image5]
 
-####4. 
-
 Then I fit my lane lines with a 2nd order polynomial kinda like this:
 
 ![alt text][image7]
 
-####5. 
-
 The radius of curvature is calculated using the `get_curvature()`. and the offset is calculate in process_image() in `LaneTracker.py`
-
-####6. Provide an example image of your result plotted back down onto the road such that the lane area is identified clearly.
 
 I then rendered the path using the dtected lane lines like the image shown below using the `render_lane_detected()`:
 
 ![alt text][image6]
 
 and the Final Image Looks like this.
-![alt text][image8]
+![alt text][image9]
 ---
 
 ###Pipeline (video)
 
-####1. 
-
 Here's a [link to my video result](./project_output_final.mp4)
 
 ---
+###Discussion
+
+####1. Briefly discuss any problems / issues you faced in your implementation of this project.  Where will your pipeline likely fail?  What could you do to make it more robust?
+
+My pipeline will fail if the lane lines become less visible due to high sunshine on road or dark shadows. Also need to work on video stabilization before processing. Because the Bumpiness of the road will also make the prediction of lane lines difficult.  
 
 
